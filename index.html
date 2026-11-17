@@ -123,12 +123,12 @@ footer p{max-width:80ch}
   <div class="cta">
     <h2>Pre-reserva tu jornada</h2>
     <p>Sin pago y sin compromiso. Te escribimos para confirmar fecha, anfitrión y valor final.</p>
-    <form id="f" class="lead" name="prereserva" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-      <input type="hidden" name="form-name" value="prereserva">
-      <p class="hp"><label>No llenar <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+    <form id="f" class="lead" name="prereserva" method="POST" action="https://formspree.io/f/xeaggjnp">
+      <input type="hidden" name="tipo" value="Pre-reserva"><input type="hidden" name="_subject" value="ViñaRaíz: nueva pre-reserva">
+      <p class="hp"><label>No llenar <input name="_gotcha" tabindex="-1" autocomplete="off"></label></p>
       <div class="frow">
         <div class="field"><label for="n">Nombre</label><input id="n" name="nombre" required autocomplete="name"></div>
-        <div class="field"><label for="c">Correo</label><input id="c" name="correo" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="c">Correo</label><input id="c" name="email" type="email" required autocomplete="email"></div>
       </div>
       <div class="frow">
         <div class="field"><label for="i">¿Qué te interesa?</label>
@@ -168,11 +168,11 @@ footer p{max-width:80ch}
     <div>
       <h2>¿Tienes un oficio, un taller o un rincón que mostrar?</h2>
       <p>Súmate como anfitrión y ofrece tu propia jornada. Tú pones el saber hacer; nosotros ponemos la plataforma, las reservas y los pagos.</p>
-      <form id="fa" class="lead" name="anfitrion" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="margin-top:1.5rem">
-        <input type="hidden" name="form-name" value="anfitrion">
-        <p class="hp"><label>No llenar <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <form id="fa" class="lead" name="anfitrion" method="POST" action="https://formspree.io/f/xeaggjnp" style="margin-top:1.5rem">
+        <input type="hidden" name="tipo" value="Solicitud de anfitrión"><input type="hidden" name="_subject" value="ViñaRaíz: nueva solicitud de anfitrión">
+        <p class="hp"><label>No llenar <input name="_gotcha" tabindex="-1" autocomplete="off"></label></p>
         <div class="field"><label for="an">Nombre</label><input id="an" name="nombre" required autocomplete="name"></div>
-        <div class="field"><label for="ac">Correo</label><input id="ac" name="correo" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="ac">Correo</label><input id="ac" name="email" type="email" required autocomplete="email"></div>
         <div class="field"><label for="ao">Tu oficio o taller</label><input id="ao" name="oficio" required placeholder="Ej: cerámica, cocina, bordado"></div>
         <div class="field"><label for="au">¿Dónde estás?</label><input id="au" name="ubicacion" required placeholder="Cerro, barrio o comuna"></div>
         <div class="field"><label for="am">Cuéntanos qué ofrecerías (opcional)</label><textarea id="am" name="mensaje" rows="3"></textarea></div>
@@ -201,10 +201,10 @@ footer p{max-width:80ch}
   var sel=document.getElementById('i');
   Array.prototype.forEach.call(document.querySelectorAll('[data-j]'),function(b){b.addEventListener('click',function(){sel.value=b.getAttribute('data-j');document.getElementById('prereserva').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.getElementById('n').focus({preventScroll:true})},500)})});
   function mail(f,d){var o=f.querySelector('.ok');o.textContent='No pudimos enviar el formulario. Escríbenos a vinaraiz.turismo@gmail.com';o.style.background='var(--coral)';o.style.display='block'}
-  Array.prototype.forEach.call(document.querySelectorAll('form.lead'),function(f){f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(f),ok=f.querySelector('.ok');
-    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(d).toString()})
-      .then(function(res){if(res.ok){ok.style.background='';ok.textContent=ok.getAttribute('data-ok')||ok.textContent;ok.style.display='block';f.reset()}else{mail(f,d)}})
-      .catch(function(){mail(f,d)})})});
+  Array.prototype.forEach.call(document.querySelectorAll('form.lead'),function(f){f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(f),ok=f.querySelector('.ok'),btn=f.querySelector('button[type=submit]');btn.disabled=true;ok.style.display='none';
+    fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:d})
+      .then(function(res){btn.disabled=false;if(res.ok){ok.style.background='';ok.textContent=ok.getAttribute('data-ok');ok.style.display='block';f.reset()}else{mail(f,d)}})
+      .catch(function(){btn.disabled=false;mail(f,d)})})});
 })();
 </script>
 </body>
