@@ -86,6 +86,8 @@ footer p{max-width:80ch}
 @media (max-width:600px){nav a:not(.keep){display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RGQQLPWJY7"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-RGQQLPWJY7');</script>
 </head>
 <body>
 <div class="wrap">
@@ -199,11 +201,11 @@ footer p{max-width:80ch}
     x+=w;}
   if(svg)svg.innerHTML=out;
   var sel=document.getElementById('i');
-  Array.prototype.forEach.call(document.querySelectorAll('[data-j]'),function(b){b.addEventListener('click',function(){sel.value=b.getAttribute('data-j');document.getElementById('prereserva').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.getElementById('n').focus({preventScroll:true})},500)})});
+  Array.prototype.forEach.call(document.querySelectorAll('[data-j]'),function(b){b.addEventListener('click',function(){if(window.gtag)gtag('event','elegir_jornada',{jornada:b.getAttribute('data-j')});sel.value=b.getAttribute('data-j');document.getElementById('prereserva').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.getElementById('n').focus({preventScroll:true})},500)})});
   function mail(f,d){var o=f.querySelector('.ok');o.textContent='No pudimos enviar el formulario. Escríbenos a vinaraiz.turismo@gmail.com';o.style.background='var(--coral)';o.style.display='block'}
   Array.prototype.forEach.call(document.querySelectorAll('form.lead'),function(f){f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(f),ok=f.querySelector('.ok'),btn=f.querySelector('button[type=submit]');btn.disabled=true;ok.style.display='none';
     fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:d})
-      .then(function(res){btn.disabled=false;if(res.ok){ok.style.background='';ok.textContent=ok.getAttribute('data-ok');ok.style.display='block';f.reset()}else{mail(f,d)}})
+      .then(function(res){btn.disabled=false;if(res.ok){if(window.gtag)gtag('event','generate_lead',{tipo:f.querySelector('[name=tipo]').value});ok.style.background='';ok.textContent=ok.getAttribute('data-ok');ok.style.display='block';f.reset()}else{mail(f,d)}})
       .catch(function(){btn.disabled=false;mail(f,d)})})});
 })();
 </script>
